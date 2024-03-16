@@ -29,7 +29,7 @@ export default class UserService {
      * @param Идентификатор пользователя.
      * @returns Промис с ответом от сервера, содержащим информацию о пользователе.
      */
-    static async getById(id: number): Promise<AxiosResponse<IUser>> {
+    static async getById(id: string): Promise<AxiosResponse<IUser>> {
         const response = await axios.get<IUser>('https://jsonplaceholder.typicode.com/users/' + id);
 
         return response;
