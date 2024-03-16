@@ -1,6 +1,19 @@
 import { useMemo } from "react";
-import { IAddress, IUser } from "../types/types";
+import { IAddress, ICompany, IUser } from "../types/types";
 
+/**
+ * Сравнение объектов IAddress или ICompany между собой.
+ *
+ * @param  a - Первый объект для сравнения.
+ * @param  b - Второй объект для сравнения.
+ * @param  fields - Массив полей для сортировки, в том порядке, по которому будет происходить сравнение.
+ * @returns  Возвращает 0, если строки равны. Возвращает отрицательное число, если строка `aStr` меньше строки `bStr`. Возвращает положительное число, если строка `aStr` больше строки `bStr`.
+ */
+const sortObjects = (a: IAddress | ICompany, b: IAddress | ICompany, fields: string[]) => {
+    const aStr = fields.map(field => a[field as keyof typeof a]).join(', ');
+    const bStr = fields.map(field => b[field as keyof typeof b]).join(', ');
+    return aStr.localeCompare(bStr);
+};
 
 /**
  * Хук для сортировки пользователей по заданному полю.
@@ -15,6 +28,14 @@ export const useSortedUsers = (users: IUser[], sort: string): IUser[] => {
             return [...users].sort((a: IUser, b: IUser) => {
                 if (typeof a[sort] === 'string' && typeof b[sort] === 'string') {
                     return (a[sort] as string).localeCompare(b[sort] as string);
+                } else if (a[sort] instanceof Object && b[sort] instanceof Object) {
+                    if (sort === 'address') {
+                        const addressFields: (keyof IAddress)[] = ['city', 'street', 'suite', 'zipcode'];
+                        return sortObjects(a[sort] as IAddress, b[sort] as IAddress, addressFields);
+                    } else if (sort === 'company') {
+                        const companyFields: (keyof ICompany)[] = ['name', 'catchPhrase'];
+                        return sortObjects(a[sort] as ICompany, b[sort] as ICompany, companyFields);
+                    }
                 }
                 return 0;
             });
@@ -23,7 +44,7 @@ export const useSortedUsers = (users: IUser[], sort: string): IUser[] => {
     }, [sort, users]);
 
     return sortedUsers;
-}
+};
 
 /**
  * Фильтрует пользователей по строковым полям.
@@ -60,7 +81,7 @@ const filterByAddressField = (
     query: string
 ) => {
     if (typeof user[field] === 'object' && field === 'address') {
-        const addressFields: (keyof IAddress)[] = ['street', 'city', 'suite', 'zipcode'];
+        const addressFields: (keyof IAddress)[] = ['city', 'street', 'suite', 'zipcode'];
         return addressFields.some(addressField => {
             return user[field][addressField]
                 .toLowerCase()
