@@ -1,6 +1,7 @@
 import { FC, ReactNode } from "react";
 import { CustomTable } from "vienna-ui";
 import { IAddress, ICompany, ITableFields, IUser } from '../types/types';
+import { useNavigate } from "react-router-dom";
 
 interface UserTableProps {
     users: IUser[];
@@ -35,13 +36,14 @@ const handleComplexType = (fieldValue: unknown) => {
 
 const UsersTable: FC<UserTableProps> = ({ users, tableFields, onUserClick }) => {
     const headers = Object.keys(tableFields);
+    const router = useNavigate();
 
     return (
         <CustomTable>
             <CustomTable.Head>
                 <CustomTable.Row>
-                    {headers.map((header, index) => (
-                        <CustomTable.Header key={index} style={{ padding: "5px" }}>
+                    {headers.map(header => (
+                        <CustomTable.Header key={header} style={{ padding: "5px" }}>
                             {tableFields[header]}
                         </CustomTable.Header>
                     ))}
@@ -51,7 +53,13 @@ const UsersTable: FC<UserTableProps> = ({ users, tableFields, onUserClick }) => 
                 {users.map(user => (
                     <CustomTable.Row key={user.id} onClick={onUserClick}>
                         {headers.map((header, index) => (
-                            <CustomTable.Data key={index} style={{ padding: "5px" }}>
+                            <CustomTable.Data
+                                key={index}
+                                style={{
+                                    padding: "5px"
+                                }}
+                                onDoubleClick={() => router(`/users/${user.id}`)}
+                            >
                                 {handleComplexType(user[header as keyof IUser])}
                             </CustomTable.Data>
                         ))}
