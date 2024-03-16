@@ -1,10 +1,10 @@
-import { FC } from "react";
+import { FC, ReactNode } from "react";
 import { CustomTable } from "vienna-ui";
-import { IAddress, ICompany, IUser } from '../types/types';
+import { IAddress, ICompany, ITableFields, IUser } from '../types/types';
 
 interface UserTableProps {
     users: IUser[];
-    headers?: (keyof IUser)[];
+    tableFields: ITableFields;
     onUserClick?: () => void;
 }
 
@@ -30,21 +30,19 @@ const handleComplexType = (fieldValue: unknown) => {
             return `${company.name}, ${company.catchPhrase}`;
         }
     }
-    return fieldValue;
+    return fieldValue as ReactNode;
 }
 
-const UsersTable: FC<UserTableProps> = ({
-    users,
-    headers = ['id', 'name', 'email', 'address'],
-    onUserClick
-}) => {
+const UsersTable: FC<UserTableProps> = ({ users, tableFields, onUserClick }) => {
+    const headers = Object.keys(tableFields);
+
     return (
         <CustomTable>
             <CustomTable.Head>
                 <CustomTable.Row>
                     {headers.map((header, index) => (
                         <CustomTable.Header key={index}>
-                            {header}
+                            {tableFields[header]}
                         </CustomTable.Header>
                     ))}
                 </CustomTable.Row>
@@ -54,7 +52,7 @@ const UsersTable: FC<UserTableProps> = ({
                     <CustomTable.Row key={user.id} onClick={onUserClick}>
                         {headers.map((header, index) => (
                             <CustomTable.Data key={index}>
-                                {handleComplexType(user[header]) as React.ReactNode}
+                                {handleComplexType(user[header as keyof IUser])}
                             </CustomTable.Data>
                         ))}
                     </CustomTable.Row>
