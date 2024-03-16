@@ -27,6 +27,12 @@ const FilterTable: FC<FilterTableProps> = ({
     const [valueFilter, setValueFilter] = useState<ValueType>({ name: '', text: '' });
     const [valueLimit, setValueLimit] = useState<number>(0);
 
+    /**
+     * Обрабатывает выбор фильтра. Устанавливает выбранное значение фильтра и обновляет состояние фильтра.
+     *
+     * @param e - Событие, которое вызвало обработчик.
+     * @param data - Выбранное значение фильтра.
+     */
     const handleFilterSelect: SelectEvent = (e, data) => {
         if (data) {
             const selectedSort = data.value as ValueType;
@@ -35,6 +41,12 @@ const FilterTable: FC<FilterTableProps> = ({
         }
     };
 
+    /**
+     * Обрабатывает выбор лимита. Устанавливает выбранное значение лимита и обновляет состояние лимита и страницы.
+     *
+     * @param e - Событие, которое вызвало обработчик.
+     * @param data - Выбранное значение лимита.
+     */
     const handleLimitSelect: SelectEvent = (e, data) => {
         if (data) {
             const newLimit = Number(data.value);
@@ -59,7 +71,7 @@ const FilterTable: FC<FilterTableProps> = ({
                 placeholder='Начните поиск'
                 onChange={(e, data) => setFilter({ ...filter, query: data?.value || '' })}
             />
-            <Flex marginLeft="s5" style = {{width: "40%"}}>
+            <Flex marginLeft="s5" style={{ width: "40%" }}>
                 <Select
                     valueToString={(item) => item && item.text}
                     compare={(item) => item && item.name}
@@ -75,6 +87,7 @@ const FilterTable: FC<FilterTableProps> = ({
                     ))}
                 </Select>
                 <Select
+                    style={{ marginLeft: "10px" }}
                     design='material'
                     placeholder='Количество строк'
                     value={valueLimit}
