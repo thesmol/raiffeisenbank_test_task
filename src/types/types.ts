@@ -26,3 +26,8 @@ export interface IFilterState {
     sort: string;
     query: string;
 }
+
+export interface ITableFields {
+    [key: string]: string;
+}
+
