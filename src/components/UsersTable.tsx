@@ -41,7 +41,7 @@ const UsersTable: FC<UserTableProps> = ({ users, tableFields, onUserClick }) => 
             <CustomTable.Head>
                 <CustomTable.Row>
                     {headers.map((header, index) => (
-                        <CustomTable.Header key={index}>
+                        <CustomTable.Header key={index} style={{ padding: "5px" }}>
                             {tableFields[header]}
                         </CustomTable.Header>
                     ))}
@@ -51,7 +51,7 @@ const UsersTable: FC<UserTableProps> = ({ users, tableFields, onUserClick }) => 
                 {users.map(user => (
                     <CustomTable.Row key={user.id} onClick={onUserClick}>
                         {headers.map((header, index) => (
-                            <CustomTable.Data key={index}>
+                            <CustomTable.Data key={index} style={{ padding: "5px" }}>
                                 {handleComplexType(user[header as keyof IUser])}
                             </CustomTable.Data>
                         ))}
