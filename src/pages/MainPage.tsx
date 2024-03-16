@@ -37,7 +37,7 @@ const MainPage: FC = () => {
         fetchUsers(limit, page);
     }, [limit, page]);
 
-    const handlePageChange = (e: FormEvent | null, data: { pageIndex: number; pageSize: number; }) => {
+    const handlePageChange = (_: FormEvent | null, data: { pageIndex: number; pageSize: number; }) => {
         if (data) {
             setPage(data.pageIndex + 1);
         }

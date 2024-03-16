@@ -33,7 +33,7 @@ const FilterTable: FC<FilterTableProps> = ({
      * @param e - Событие, которое вызвало обработчик.
      * @param data - Выбранное значение фильтра.
      */
-    const handleFilterSelect: SelectEvent = (e, data) => {
+    const handleFilterSelect: SelectEvent = (_, data) => {
         if (data) {
             const selectedSort = data.value as ValueType;
             setFilter({ ...filter, sort: selectedSort.name });
@@ -47,7 +47,7 @@ const FilterTable: FC<FilterTableProps> = ({
      * @param e - Событие, которое вызвало обработчик.
      * @param data - Выбранное значение лимита.
      */
-    const handleLimitSelect: SelectEvent = (e, data) => {
+    const handleLimitSelect: SelectEvent = (_, data) => {
         if (data) {
             const newLimit = Number(data.value);
 
@@ -69,7 +69,7 @@ const FilterTable: FC<FilterTableProps> = ({
                 design='material'
                 value={filter.query}
                 placeholder='Начните поиск'
-                onChange={(e, data) => setFilter({ ...filter, query: data?.value || '' })}
+                onChange={(_, data) => setFilter({ ...filter, query: data?.value || '' })}
             />
             <Flex marginLeft="s5" style={{ width: "40%" }}>
                 <Select
